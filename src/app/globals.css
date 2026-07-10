@@ -296,6 +296,7 @@ header {
   padding: 4px 10px; border-radius: 3px; cursor: pointer; transition: var(--tr);
 }
 .fmtb:hover { background: var(--ac); color: #000; }
+.fmtb.on { background: var(--ac); color: #000; }
 .ch-pills { display: flex; flex-wrap: wrap; gap: 5px; margin-top: 7px; }
 .ch-pill {
   background: var(--bg3); border: 1px solid var(--br); color: var(--t2);

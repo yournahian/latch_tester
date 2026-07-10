@@ -120,6 +120,7 @@ export default function Home() {
   const [hdrs, setHdrs] = useState<KVRow[]>([mkKV()]);
   const [bodyType, setBodyType] = useState<BodyType>("none");
   const [jsonBody, setJsonBody] = useState("");
+  const [chatView, setChatView] = useState(false);
   const [formBody, setFormBody] = useState<KVRow[]>([mkKV()]);
   const [rawBody, setRawBody] = useState("");
   const [rawCT, setRawCT] = useState("text/plain");
@@ -195,7 +196,7 @@ export default function Home() {
   const hdrCount = activeKV(hdrs).length;
 
   // ── Build & send request ──
-  const sendRequest = async () => {
+  const sendRequest = async (bodyOverride?: string) => {
     if (loading) return;
     let reqUrl = url.trim();
     if (!reqUrl) { toast("Please enter a URL", "err"); return; }
@@ -217,8 +218,8 @@ export default function Home() {
       else { const sep = reqUrl.includes("?") ? "&" : "?"; reqUrl += `${sep}${encodeURIComponent(akName.trim())}=${encodeURIComponent(akVal)}`; }
     }
 
-    let body: string | undefined;
-    if (method !== "GET" && method !== "HEAD") {
+    let body: string | undefined = bodyOverride;
+    if (body === undefined && method !== "GET" && method !== "HEAD") {
       if (bodyType === "json" && jsonBody.trim()) {
         body = jsonBody.trim();
         if (!headers["Content-Type"]) headers["Content-Type"] = "application/json";
@@ -260,6 +261,26 @@ export default function Home() {
       setStatus(data.status); setStatusText(data.statusText || "");
       setResTime(`${ms}ms`); setResSize(fmtBytes(size));
       setResBody(text); setResHdrs(rHdrs);
+
+      // Auto-append assistant response or Latch error to Chat completion messages
+      try {
+        const respObj = JSON.parse(text);
+        const choice = respObj.choices?.[0];
+        if (choice && choice.message) {
+          const reqObj = JSON.parse(body || "{}");
+          if (reqObj && Array.isArray(reqObj.messages)) {
+            reqObj.messages.push(choice.message);
+            setJsonBody(JSON.stringify(reqObj, null, 2));
+          }
+        } else if (respObj.error) {
+          const reqObj = JSON.parse(body || "{}");
+          if (reqObj && Array.isArray(reqObj.messages)) {
+            const errContent = `❌ [Policy Blocked]\nFilter: ${respObj.deniedBy || "N/A"}\nReason: ${respObj.reason || respObj.error}`;
+            reqObj.messages.push({ role: "assistant", content: errContent });
+            setJsonBody(JSON.stringify(reqObj, null, 2));
+          }
+        }
+      } catch {}
 
       const dec = rHdrs["x-latch-decision"];
       if (dec) {
@@ -634,10 +655,20 @@ export default function Home() {
                   </div>
                   {bodyType === "none" && <p style={{ textAlign:"center", padding:"16px 0", fontSize:12, color:"var(--t3)" }}>No body will be sent.</p>}
                   {bodyType === "json" && (
-                    <>
-                      <textarea className="bta" placeholder={'{"key": "value"}'} value={jsonBody} onChange={e => setJsonBody(e.target.value)} />
-                      <button className="fmtb" onClick={formatJSON}>Format JSON ✦</button>
-                    </>
+                    <div style={{ display: "flex", flexDirection: "column", gap: 8 }}>
+                      <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center" }}>
+                        <div style={{ display: "flex", gap: 5 }}>
+                          <button className={`fmtb ${!chatView ? "on" : ""}`} style={{ margin: 0, padding: "3px 8px" }} onClick={() => setChatView(false)}>JSON Raw</button>
+                          <button className={`fmtb ${chatView ? "on" : ""}`} style={{ margin: 0, padding: "3px 8px" }} onClick={() => setChatView(true)}>Chat UI</button>
+                        </div>
+                        {!chatView && <button className="fmtb" style={{ margin: 0 }} onClick={formatJSON}>Format ✦</button>}
+                      </div>
+                      {!chatView ? (
+                        <textarea className="bta" placeholder={'{"key": "value"}'} value={jsonBody} onChange={e => setJsonBody(e.target.value)} />
+                      ) : (
+                        <ChatUI jsonBody={jsonBody} onChange={setJsonBody} onSend={(newBody) => sendRequest(newBody)} />
+                      )}
+                    </div>
                   )}
                   {bodyType === "form" && (
                     <>
@@ -751,6 +782,104 @@ export default function Home() {
 
       {/* ── TOAST ── */}
       <div className={`toast${toastVisible ? " show" : ""} ${toastType}`}>{toastMsg}</div>
+    </div>
+  );
+}
+
+// ─── CHAT UI PANEL ────────────────────────────────────────────
+function ChatUI({ jsonBody, onChange, onSend }: { jsonBody: string; onChange: (val: string) => void; onSend: (newBody: string) => void }) {
+  let payload: any = null;
+  let error = false;
+  try {
+    payload = JSON.parse(jsonBody || "{}");
+    if (!payload || !Array.isArray(payload.messages)) {
+      error = true;
+    }
+  } catch {
+    error = true;
+  }
+
+  const [input, setInput] = useState("");
+  const chatStreamRef = useRef<HTMLDivElement>(null);
+
+  // Auto-scroll stream to bottom on new messages
+  useEffect(() => {
+    if (chatStreamRef.current) {
+      chatStreamRef.current.scrollTop = chatStreamRef.current.scrollHeight;
+    }
+  }, [jsonBody]);
+
+  const sendMessage = () => {
+    if (!input.trim() || error) return;
+    const messages = [...(payload.messages || [])];
+    messages.push({ role: "user", content: input.trim() });
+    const newPayload = { ...payload, messages };
+    const newJson = JSON.stringify(newPayload, null, 2);
+    onChange(newJson);
+    setInput("");
+    onSend(newJson);
+  };
+
+  const handleKeyPress = (e: React.KeyboardEvent) => {
+    if (e.key === "Enter" && !e.shiftKey) {
+      e.preventDefault();
+      sendMessage();
+    }
+  };
+
+  if (error) {
+    return (
+      <div style={{ padding: 14, background: "var(--rdb)", border: "1px solid var(--rd)", borderRadius: "var(--rs)" }}>
+        <p style={{ fontSize: 12, color: "var(--rd)", lineHeight: 1.5 }}>To use Chat UI, your JSON body must contain a standard <code>messages</code> array.</p>
+        <button className="fmtb" style={{ marginTop: 10 }} onClick={() => {
+          onChange(JSON.stringify({
+            messages: [{ role: "user", content: "Hello!" }],
+            model: "llama-3.3-70b-versatile"
+          }, null, 2));
+        }}>Initialize Chat Template</button>
+      </div>
+    );
+  }
+
+  const messages: any[] = payload.messages || [];
+
+  return (
+    <div style={{ display: "flex", flexDirection: "column", height: 260, background: "var(--bgi)", border: "1px solid var(--br)", borderRadius: "var(--rs)", overflow: "hidden" }}>
+      {/* Model display */}
+      <div style={{ padding: "6px 10px", background: "var(--bg3)", borderBottom: "1px solid var(--br)", display: "flex", justifyContent: "space-between", fontSize: 11, color: "var(--t2)" }}>
+        <span>Model: <code>{payload.model || "not-specified"}</code></span>
+      </div>
+      {/* Message stream */}
+      <div ref={chatStreamRef} style={{ flex: 1, overflowY: "auto", padding: 10, display: "flex", flexDirection: "column", gap: 8 }}>
+        {messages.map((m, idx) => {
+          const isUser = m.role === "user";
+          return (
+            <div key={idx} style={{ display: "flex", justifyContent: isUser ? "flex-end" : "flex-start" }}>
+              <div style={{
+                maxWidth: "85%",
+                padding: "8px 12px",
+                borderRadius: 10,
+                borderBottomRightRadius: isUser ? 2 : 10,
+                borderBottomLeftRadius: isUser ? 10 : 2,
+                background: isUser ? "var(--acg)" : "var(--bg3)",
+                border: "1px solid " + (isUser ? "var(--ac)" : "var(--br)"),
+                color: "var(--t1)",
+                fontSize: 12,
+                wordBreak: "break-word"
+              }}>
+                <div style={{ fontSize: 9, fontWeight: 700, textTransform: "uppercase", color: isUser ? "var(--ac)" : "var(--t2)", marginBottom: 2 }}>{m.role}</div>
+                <div style={{ whiteSpace: "pre-wrap" }}>{m.content}</div>
+              </div>
+            </div>
+          );
+        })}
+      </div>
+      {/* Input bar */}
+      <div style={{ display: "flex", borderTop: "1px solid var(--br)", background: "var(--bg2)" }}>
+        <input type="text" placeholder="Type a message..." value={input} onChange={e => setInput(e.target.value)} onKeyDown={handleKeyPress}
+          style={{ flex: 1, background: "none", border: "none", color: "var(--t1)", padding: "10px 12px", outline: "none", fontSize: 12 }} />
+        <button onClick={sendMessage} style={{ background: "var(--ac)", border: "none", color: "#000", fontWeight: 700, padding: "0 14px", cursor: "pointer", fontSize: 12 }}>Send</button>
+      </div>
     </div>
   );
 }
