@@ -9,9 +9,9 @@
   --bg3:   #151520;
   --bgi:   #09090d;
   --br:    rgba(255, 255, 255, 0.08);
-  --ac:    #6366f1;
-  --acd:   #4f46e5;
-  --acg:   rgba(99, 102, 241, 0.1);
+  --ac:    #db9338;
+  --acd:   #b57222;
+  --acg:   rgba(219, 147, 56, 0.1);
   --t1:    #f4f4f7;
   --t2:    #a1a1be;
   --t3:    #62627a;
@@ -59,7 +59,7 @@ html, body {
   flex-direction: column;
   height: 100vh;
   height: 100dvh;
-  background: radial-gradient(circle at 50% -20%, rgba(99, 102, 241, 0.08) 0%, transparent 70%);
+  background: radial-gradient(circle at 50% -20%, rgba(219, 147, 56, 0.08) 0%, transparent 70%);
 }
 
 /* ── HEADER ── */
@@ -88,12 +88,12 @@ header {
   width: 32px;
   height: 32px;
   border-radius: 8px;
-  background: linear-gradient(135deg, var(--ac), #8b5cf6);
+  background: linear-gradient(135deg, var(--ac), #b57222);
   display: flex;
   align-items: center;
   justify-content: center;
   font-size: 15px;
-  box-shadow: 0 0 15px rgba(99, 102, 241, 0.4);
+  box-shadow: 0 0 15px rgba(219, 147, 56, 0.4);
 }
 .brand-name {
   font-size: 16px;
@@ -135,7 +135,7 @@ header {
 .ico-btn:hover {
   color: var(--t1);
   border-color: var(--ac);
-  background: rgba(99, 102, 241, 0.12);
+  background: rgba(219, 147, 56, 0.12);
   transform: translateY(-1px);
 }
 .ico-btn:active {
@@ -145,7 +145,7 @@ header {
 /* ── LOADING BAR ── */
 .lbar {
   height: 2px;
-  background: linear-gradient(90deg, transparent, var(--ac), #8b5cf6, transparent);
+  background: linear-gradient(90deg, transparent, var(--ac), #b57222, transparent);
   background-size: 200% 100%;
   display: none;
 }
@@ -237,7 +237,7 @@ header {
 }
 .tok-in:focus {
   border-color: var(--ac);
-  box-shadow: 0 0 0 2px rgba(99, 102, 241, 0.15);
+  box-shadow: 0 0 0 2px rgba(219, 147, 56, 0.15);
 }
 .tok-in::placeholder {
   color: var(--t3);
@@ -254,11 +254,11 @@ header {
   transition: var(--tr);
   white-space: nowrap;
   font-family: var(--fn);
-  box-shadow: 0 2px 8px rgba(99, 102, 241, 0.25);
+  box-shadow: 0 2px 8px rgba(219, 147, 56, 0.25);
 }
 .tok-sv:hover {
   transform: translateY(-1px);
-  box-shadow: 0 4px 12px rgba(99, 102, 241, 0.4);
+  box-shadow: 0 4px 12px rgba(219, 147, 56, 0.4);
 }
 .tok-sv:active {
   transform: translateY(0);
@@ -309,7 +309,7 @@ header {
 }
 .sb-item:hover {
   background: rgba(255, 255, 255, 0.03);
-  border-left-color: rgba(99, 102, 241, 0.5);
+  border-left-color: rgba(219, 147, 56, 0.5);
 }
 .sb-txt {
   font-size: 12.5px;
@@ -413,7 +413,7 @@ header {
 }
 .msel:focus {
   border-color: var(--ac);
-  box-shadow: 0 0 0 2px rgba(99, 102, 241, 0.15);
+  box-shadow: 0 0 0 2px rgba(219, 147, 56, 0.15);
 }
 .msel option {
   background: var(--bg2);
@@ -433,7 +433,7 @@ header {
 }
 .url-in:focus {
   border-color: var(--ac);
-  box-shadow: 0 0 0 2px rgba(99, 102, 241, 0.15);
+  box-shadow: 0 0 0 2px rgba(219, 147, 56, 0.15);
 }
 .url-in::placeholder {
   color: var(--t3);
@@ -441,7 +441,7 @@ header {
   font-size: 11.5px;
 }
 .send-btn {
-  background: linear-gradient(135deg, var(--ac), #8b5cf6);
+  background: linear-gradient(135deg, var(--ac), #b57222);
   border: none;
   color: #fff;
   font-family: var(--fn);
@@ -456,11 +456,11 @@ header {
   gap: 6px;
   white-space: nowrap;
   flex-shrink: 0;
-  box-shadow: 0 2px 10px rgba(99, 102, 241, 0.25);
+  box-shadow: 0 2px 10px rgba(219, 147, 56, 0.25);
 }
 .send-btn:hover {
   transform: translateY(-1px);
-  box-shadow: 0 4px 15px rgba(99, 102, 241, 0.45);
+  box-shadow: 0 4px 15px rgba(219, 147, 56, 0.45);
   filter: brightness(1.08);
 }
 .send-btn:active {
@@ -510,8 +510,8 @@ header {
 }
 .tb.on {
   color: #fff;
-  background: rgba(99, 102, 241, 0.12);
-  border-color: rgba(99, 102, 241, 0.3);
+  background: rgba(219, 147, 56, 0.12);
+  border-color: rgba(219, 147, 56, 0.3);
 }
 .tbdg {
   background: var(--ac);
@@ -567,7 +567,7 @@ header {
 }
 .kv-i:focus {
   border-color: var(--ac);
-  box-shadow: 0 0 0 2px rgba(99, 102, 241, 0.12);
+  box-shadow: 0 0 0 2px rgba(219, 147, 56, 0.12);
 }
 .kv-i::placeholder {
   color: var(--t3);
@@ -619,7 +619,7 @@ header {
 .add-row:hover {
   border-color: var(--ac);
   color: var(--t1);
-  background: rgba(99, 102, 241, 0.05);
+  background: rgba(219, 147, 56, 0.05);
 }
 
 /* ── AUTH ── */
@@ -648,7 +648,7 @@ header {
   color: var(--t1);
 }
 .abtn.on {
-  background: rgba(99, 102, 241, 0.12);
+  background: rgba(219, 147, 56, 0.12);
   border-color: var(--ac);
   color: #fff;
 }
@@ -679,7 +679,7 @@ header {
 }
 .fi:focus {
   border-color: var(--ac);
-  box-shadow: 0 0 0 2px rgba(99, 102, 241, 0.12);
+  box-shadow: 0 0 0 2px rgba(219, 147, 56, 0.12);
 }
 .fi::placeholder {
   color: var(--t3);
@@ -873,7 +873,7 @@ header {
 .cpb:hover {
   border-color: var(--ac);
   color: #fff;
-  background: rgba(99, 102, 241, 0.1);
+  background: rgba(219, 147, 56, 0.1);
 }
 .cpb.done {
   color: var(--gr);
@@ -905,11 +905,11 @@ header {
   font-weight: 800;
   letter-spacing: 0.08em;
   text-transform: uppercase;
-  background: rgba(99, 102, 241, 0.15);
+  background: rgba(219, 147, 56, 0.15);
   color: var(--ac);
   padding: 2px 7px;
   border-radius: 4px;
-  border: 1px solid rgba(99, 102, 241, 0.25);
+  border: 1px solid rgba(219, 147, 56, 0.25);
 }
 .ltdec {
   font-weight: 700;
@@ -958,8 +958,8 @@ header {
 }
 .rbt.on {
   color: #fff;
-  background: rgba(99, 102, 241, 0.12);
-  border-color: rgba(99, 102, 241, 0.3);
+  background: rgba(219, 147, 56, 0.12);
+  border-color: rgba(219, 147, 56, 0.3);
 }
 
 /* ── RESPONSE CONTENT ── */
@@ -1066,7 +1066,7 @@ pre.jview {
   margin-top: 10px;
   padding: 10px;
   background: var(--acg);
-  border: 1px solid rgba(99, 102, 241, 0.2);
+  border: 1px solid rgba(219, 147, 56, 0.2);
   border-radius: var(--rs);
   color: var(--ac);
   font-size: 11.5px;
@@ -1131,11 +1131,11 @@ pre.jview {
 .btnp {
   background: linear-gradient(135deg, var(--ac), var(--acd));
   color: #fff;
-  box-shadow: 0 2px 8px rgba(99, 102, 241, 0.25);
+  box-shadow: 0 2px 8px rgba(219, 147, 56, 0.25);
 }
 .btnp:hover {
   transform: translateY(-1px);
-  box-shadow: 0 4px 12px rgba(99, 102, 241, 0.4);
+  box-shadow: 0 4px 12px rgba(219, 147, 56, 0.4);
 }
 .btng {
   background: var(--bg3);
