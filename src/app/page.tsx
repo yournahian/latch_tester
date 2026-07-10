@@ -533,7 +533,7 @@ export default function Home() {
                     autoComplete="off" spellCheck={false}
                     value={url} onChange={e => setUrl(e.target.value)}
                     onKeyDown={e => { if (e.key === "Enter") sendRequest(); }} />
-                  <button className={`send-btn${loading ? " loading" : ""}`} onClick={sendRequest}>
+                  <button className={`send-btn${loading ? " loading" : ""}`} onClick={() => sendRequest()}>
                     <span className={loading ? "spin" : ""}>{loading ? "⟳" : "▶"}</span>
                     <span>{loading ? "Sending..." : "Send"}</span>
                   </button>
