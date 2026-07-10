@@ -844,7 +844,7 @@ function ChatUI({ jsonBody, onChange, onSend }: { jsonBody: string; onChange: (v
   const messages: any[] = payload.messages || [];
 
   return (
-    <div style={{ display: "flex", flexDirection: "column", height: 260, background: "var(--bgi)", border: "1px solid var(--br)", borderRadius: "var(--rs)", overflow: "hidden" }}>
+    <div style={{ display: "flex", flexDirection: "column", height: 380, background: "var(--bgi)", border: "1px solid var(--br)", borderRadius: "var(--rs)", overflow: "hidden" }}>
       {/* Model display */}
       <div style={{ padding: "6px 10px", background: "var(--bg3)", borderBottom: "1px solid var(--br)", display: "flex", justifyContent: "space-between", fontSize: 11, color: "var(--t2)" }}>
         <span>Model: <code>{payload.model || "not-specified"}</code></span>

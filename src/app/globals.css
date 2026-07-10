@@ -284,7 +284,7 @@ header {
 .btb:hover { color: var(--t1); background: var(--bg); }
 .btb.on { background: var(--acg); color: var(--ac); }
 .bta {
-  width: 100%; min-height: 140px; background: var(--bgi); border: 1px solid var(--br);
+  width: 100%; min-height: 380px; background: var(--bgi); border: 1px solid var(--br);
   color: var(--t1); font-family: var(--mn); font-size: 12px; line-height: 1.6;
   padding: 10px 12px; border-radius: var(--rs); outline: none; resize: vertical; transition: var(--tr);
 }
