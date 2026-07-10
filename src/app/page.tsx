@@ -428,13 +428,25 @@ export default function Home() {
       {/* ── HEADER ── */}
       <header>
         <div className="brand">
-          <div className="brand-ico">🔒</div>
+          <div className="brand-ico">
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" style={{ width: 15, height: 15, color: '#fff' }}>
+              <path fillRule="evenodd" d="M12 1.5a5.25 5.25 0 0 0-5.25 5.25v3a3 3 0 0 0-3 3v6.75a3 3 0 0 0 3 3h10.5a3 3 0 0 0 3-3v-6.75a3 3 0 0 0-3-3v-3c0-2.9-2.35-5.25-5.25-5.25Zm3.75 8.25v-3a3.75 3.75 0 1 0-7.5 0v3h7.5Z" clipRule="evenodd" />
+            </svg>
+          </div>
           <div className="brand-name">Latch Tester</div>
           <span className="brand-tag">Mobile</span>
         </div>
         <div className="hdr-btns">
-          <button className="ico-btn" onClick={() => setSaveModal(true)} title="Save Request">💾</button>
-          <button className="ico-btn" onClick={() => setSbOpen(v => !v)} title="Toggle Sidebar">☰</button>
+          <button className="ico-btn" onClick={() => setSaveModal(true)} title="Save Request">
+            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={2} stroke="currentColor" style={{ width: 18, height: 18 }}>
+              <path strokeLinecap="round" strokeLinejoin="round" d="M17.593 3.322c1.1.128 1.907 1.077 1.907 2.185V21L12 17.25 4.5 21V5.507c0-1.108.806-2.057 1.907-2.185a48.507 48.507 0 0 1 11.186 0Z" />
+            </svg>
+          </button>
+          <button className="ico-btn" onClick={() => setSbOpen(v => !v)} title="Toggle Sidebar">
+            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={2} stroke="currentColor" style={{ width: 18, height: 18 }}>
+              <path strokeLinecap="round" strokeLinejoin="round" d="M3.75 6.75h16.5M3.75 12h16.5m-16.5 5.25h16.5" />
+            </svg>
+          </button>
         </div>
       </header>
 
@@ -448,7 +460,12 @@ export default function Home() {
         {/* ── SIDEBAR ── */}
         <aside className={`sidebar${sbOpen ? " open" : ""}`}>
           <div className="tok-box">
-            <div className="tok-lbl">🔑 Latch Tokens</div>
+            <div className="tok-lbl" style={{ display: "flex", alignItems: "center", gap: 5 }}>
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" style={{ width: 12, height: 12 }}>
+                <path fillRule="evenodd" d="M15.75 1.5a6.75 6.75 0 0 0-6.651 7.906L2.34 16.002a2.25 2.25 0 0 0-.64 1.533v2.215h.002a2.25 2.25 0 0 0 2.25 2.25h1.5a2.25 2.25 0 0 0 2.25-2.25v-.75H9.75a2.25 2.25 0 0 0 2.25-2.25v-.75h.75a2.25 2.25 0 0 0 1.623-.689l2.253-2.253a6.75 6.75 0 1 0-.876-11.621ZM19 7.5a2 2 0 1 1-4 0 2 2 0 0 1 4 0Z" clipRule="evenodd" />
+              </svg>
+              Latch Tokens
+            </div>
             <div style={{ display: "flex", flexDirection: "column", gap: 5 }}>
               <input type="text" className="tok-in" placeholder="Token Name (e.g. GROQ)"
                 value={tokenName} onChange={e => setTokenName(e.target.value)}
@@ -464,7 +481,12 @@ export default function Home() {
               <div style={{ marginTop: 10, display: "flex", flexDirection: "column", gap: 4, maxHeight: 110, overflowY: "auto" }}>
                 {savedTokens.map(t => (
                   <div key={t.name} style={{ display: "flex", alignItems: "center", justifyContent: "space-between", background: "var(--bg2)", padding: "4px 6px", borderRadius: "var(--rs)", border: "1px solid var(--br)" }}>
-                    <span style={{ fontSize: 11, fontWeight: 500, color: "var(--t2)" }} title={t.val}>🔑 {t.name}</span>
+                    <span style={{ fontSize: 11, fontWeight: 500, color: "var(--t2)", display: "flex", alignItems: "center", gap: 4 }} title={t.val}>
+                      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" style={{ width: 11, height: 11, opacity: 0.7 }}>
+                        <path fillRule="evenodd" d="M15.75 1.5a6.75 6.75 0 0 0-6.651 7.906L2.34 16.002a2.25 2.25 0 0 0-.64 1.533v2.215h.002a2.25 2.25 0 0 0 2.25 2.25h1.5a2.25 2.25 0 0 0 2.25-2.25v-.75H9.75a2.25 2.25 0 0 0 2.25-2.25v-.75h.75a2.25 2.25 0 0 0 1.623-.689l2.253-2.253a6.75 6.75 0 1 0-.876-11.621ZM19 7.5a2 2 0 1 1-4 0 2 2 0 0 1 4 0Z" clipRule="evenodd" />
+                      </svg>
+                      {t.name}
+                    </span>
                     <button onClick={() => deleteToken(t.name)} style={{ background: "none", border: "none", color: "var(--t3)", cursor: "pointer", fontSize: 13, lineHeight: 1 }}>×</button>
                   </div>
                 ))}
@@ -480,7 +502,12 @@ export default function Home() {
               : Object.entries(collections).map(([col, reqs]) => (
                 <div key={col} style={{ borderBottom: "1px solid rgba(255,255,255,0.02)", paddingBottom: 6 }}>
                   <div className="col-n" style={{ display: "flex", justifyContent: "space-between", alignItems: "center" }}>
-                    <span>📁 {col} <span style={{ color: "var(--t3)" }}>({reqs.length})</span></span>
+                    <span style={{ display: "flex", alignItems: "center", gap: 4 }}>
+                      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" style={{ width: 13, height: 13, opacity: 0.7 }}>
+                        <path d="M19.5 21a3 3 0 0 0 3-3v-4.5a3 3 0 0 0-3-3h-1.5V9a3 3 0 0 0-3-3h-4.5L9.375 4.125A3 3 0 0 0 7.25 3H3a3 3 0 0 0-3 3v12a3 3 0 0 0 3 3h16.5Z" />
+                      </svg>
+                      {col} <span style={{ color: "var(--t3)" }}>({reqs.length})</span>
+                    </span>
                     <button onClick={(e) => deleteCol(col, e)} style={{ background: "none", border: "none", color: "var(--t3)", cursor: "pointer", fontSize: 14, padding: "0 6px" }} title="Delete Collection">×</button>
                   </div>
                   {reqs.map((r, i) => (
