@@ -158,6 +158,9 @@ header {
   .req-pane { border-right: 1px solid var(--br); }
 }
 .req-pane, .res-pane { display: flex; flex-direction: column; flex: 1; min-height: 0; overflow: hidden; }
+@media (max-width: 899px) {
+  .req-pane { flex: 2; }
+}
 
 /* ── URL BAR ── */
 .rqb { display: flex; flex-direction: column; border-bottom: 1px solid var(--br); flex-shrink: 0; }
@@ -284,9 +287,27 @@ header {
 .btb:hover { color: var(--t1); background: var(--bg); }
 .btb.on { background: var(--acg); color: var(--ac); }
 .bta {
-  width: 100%; min-height: 380px; background: var(--bgi); border: 1px solid var(--br);
+  width: 100%; min-height: 280px; background: var(--bgi); border: 1px solid var(--br);
   color: var(--t1); font-family: var(--mn); font-size: 12px; line-height: 1.6;
   padding: 10px 12px; border-radius: var(--rs); outline: none; resize: vertical; transition: var(--tr);
+}
+@media (min-width: 900px) {
+  .bta { min-height: 380px; }
+}
+
+.chat-ui-container {
+  display: flex;
+  flex-direction: column;
+  height: 280px;
+  background: var(--bgi);
+  border: 1px solid var(--br);
+  border-radius: var(--rs);
+  overflow: hidden;
+}
+@media (min-width: 900px) {
+  .chat-ui-container {
+    height: 380px;
+  }
 }
 .bta:focus { border-color: var(--ac); }
 .bta::placeholder { color: var(--t3); font-family: var(--fn); }
