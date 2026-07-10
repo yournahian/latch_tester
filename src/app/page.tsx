@@ -423,6 +423,7 @@ export default function Home() {
 
   const isCORS = (msg: string) => /fetch|network|failed/i.test(msg);
 
+  // Touch to trigger hot reload after production build
   return (
     <div className="app">
       {/* ── HEADER ── */}
